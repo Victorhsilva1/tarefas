@@ -1,4 +1,4 @@
-package br.dev.marcelo.tarefas.model;
+package br.dev.victor.tarefas.model;
 
 public enum Status {
 	

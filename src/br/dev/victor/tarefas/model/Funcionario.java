@@ -1,4 +1,4 @@
-package br.dev.marcelo.tarefas.model;
+package br.dev.victor.tarefas.model;
 
 public class Funcionario {
 
@@ -39,4 +39,9 @@ public class Funcionario {
 		this.email = email;
 	}
 
+	@Override
+	public String toString() {
+		return this.codigo + "," + this.nome + "," + this.matricula + "," + this.email + "\n";
+		
+	}
 }

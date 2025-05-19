@@ -1,6 +1,10 @@
-package br.dev.marcelo.tarefas.dao;
+package br.dev.victor.tarefas.dao;
 
-import br.dev.marcelo.tarefas.model.Funcionario;
+import java.io.BufferedWriter;
+import java.io.IOException;
+
+import br.dev.victor.tarefas.factory.FileFactory;
+import br.dev.victor.tarefas.model.Funcionario;
 
 public class FuncionarioDAO {
 
@@ -13,7 +17,22 @@ public class FuncionarioDAO {
 	
 	public void gravar() {
 		
+		FileFactory ff = new FileFactory();
 		
+		try {
+			BufferedWriter bw = ff.getBufferedWriter();
+			
+			bw.write(funcionario.toString());
+			bw.flush();
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		
+	}
+	
+	
+	public void showEmployees() {
 		
 	}
 	
