@@ -1,140 +1,78 @@
 package br.dev.victor.tarefas.ui;
 
-import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
-import br.dev.victor.tarefas.dao.FuncionarioDAO;
-import br.dev.victor.tarefas.model.Funcionario;
-import br.dev.victor.tarefas.utils.Utils;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
 
 public class FrameTarefa {
 
-	private JLabel labelCodigo;
-	private JLabel labelNome;
-	private JLabel labelTelefone;
-	private JLabel labelEmail;
-	
-	private JTextField txtCodigo;
-	private JTextField txtNome;
-	private JTextField txtTelefone;
-	private JTextField txtEmail;
-	
-	private JButton btnSalvar;
-	private JButton btnSair;
-	
-	public FrameTarefa (JFrame telaTarefa) {
-		criarTela(telaTarefa);
-	}
-	
-	private void criarTela(JFrame telaTarefa) {
-		
-		JDialog tela = new JDialog(telaTarefa, "Tarefas", true);
-		tela.setLayout(null);
-		tela.setSize(400, 400);
-		tela.setResizable(false);
-		tela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		tela.setLocationRelativeTo(telaTarefa);
-		
-		Container painel = tela.getContentPane();
-		
-		labelCodigo = new JLabel("Código:");
-		labelCodigo.setBounds(20, 20, 200, 30);
-		txtCodigo = new JTextField();
-		txtCodigo.setBounds(20, 50, 200, 30);
-		txtCodigo.setEnabled(false);
-		
-		labelNome = new JLabel("Nome:");
-		labelNome.setBounds(20, 85, 200, 30);
-		txtNome = new JTextField();
-		txtNome.setBounds(20,115,350,30);
-		
-		labelTelefone = new JLabel("Telefone:");
-		labelTelefone.setBounds(20, 150, 200, 30);
-		txtTelefone = new JTextField();
-		txtTelefone.setBounds(20, 180, 200, 30);
-		
-		labelEmail = new JLabel("E-mail:");
-		labelEmail.setBounds(20, 215, 200, 30);
-		txtEmail = new JTextField();
-		txtEmail.setBounds(20, 245, 300, 30);
-		
-		btnSalvar = new JButton("Salvar");
-		btnSalvar.setBounds(20, 290, 100, 40);
-		
-		btnSair = new JButton("Sair");
-		btnSair.setBounds(130, 290, 100, 40);
-		
-		painel.add(labelCodigo);
-		painel.add(txtCodigo);
-		painel.add(labelNome);
-		painel.add(txtNome);
-		painel.add(labelTelefone);
-		painel.add(txtTelefone);
-		painel.add(labelEmail);
-		painel.add(txtEmail);
-		painel.add(btnSalvar);
-		painel.add(btnSair);
-		
-		// Adicionar os ouvintes de ação dos botões
-		
-		btnSalvar.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Funcionario funcionario = new Funcionario();
-				funcionario.setCodigo(Utils.gerarUUID());
-				funcionario.setNome(txtNome.getText());
-				funcionario.setTelefone(txtTelefone.getText());
-				funcionario.setEmail(txtEmail.getText());
-				
-				FuncionarioDAO dao = new FuncionarioDAO(funcionario);
-				dao.gravar();
-				
-				JOptionPane.showMessageDialog(
-						tela,
-						txtNome.getText() + " gravado com sucesso!",
-						"Sucesso",
-						JOptionPane.INFORMATION_MESSAGE
-				);
-				
-				limparFormulario();
-				
-			}
-		});
-		
-		btnSair.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int resposta = JOptionPane.showConfirmDialog(
-					tela,
-					"Confirma a saída do sistema?",
-					"Sair do sistema",
-					JOptionPane.YES_NO_OPTION
-				);
-				if (resposta == 0) {
-					tela.setVisible(false);
-				}
-			}
-		});
-		
-		tela.setVisible(true);
-		
-	}
-	
-	private void limparFormulario() {
-		txtNome.setText(null);
-		txtEmail.setText(null);
-		txtTelefone.setText(null);
-		txtNome.requestFocus();
-	}
-	
+    private JFrame tela;
+    private JTable tabelaTarefas;
+    private DefaultTableModel modeloTabela;
+    
+    
+    
+    //Arquivo no SENAI C:\\Users\\25132598\\Tarefas\\Tarefas.txt
+    private final String caminhoArquivo = "C:\\Users\\Garibas\\Documents\\SENAI\\Celso\\Tarefas.txt";
+
+    public FrameTarefa() {
+        criarTela();
+        carregarTarefas();
+    }
+
+    private void criarTela() {
+        tela = new JFrame("Tarefas do Usuário");
+        tela.setSize(600, 400);
+        tela.setLayout(null);
+        tela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        tela.setLocationRelativeTo(null);
+
+        JLabel titulo = new JLabel("Tarefas do Usuário");
+        titulo.setFont(new Font("Arial", Font.BOLD, 16));
+        titulo.setBounds(20, 10, 300, 30);
+
+        String[] colunas = { "Código", "Atividade", "Responsável" };
+        modeloTabela = new DefaultTableModel(colunas, 0);
+        tabelaTarefas = new JTable(modeloTabela);
+
+        JScrollPane scroll = new JScrollPane(tabelaTarefas);
+        scroll.setBounds(20, 50, 540, 220);
+
+        JButton btnCadastrar = new JButton("Nova Tarefa");
+        btnCadastrar.setBounds(20, 290, 120, 40);
+
+        JButton btnSair = new JButton("Sair");
+        btnSair.setBounds(440, 290, 120, 40);
+
+        btnCadastrar.addActionListener(e -> new FrameCadastroTarefas());
+        btnSair.addActionListener(e -> tela.dispose());
+
+        tela.add(titulo);
+        tela.add(scroll);
+        tela.add(btnCadastrar);
+        tela.add(btnSair);
+
+        tela.setVisible(true);
+    }
+
+    private void carregarTarefas() {
+        try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
+            String linha;
+            br.readLine(); 
+
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(";");
+                if (dados.length >= 3) {
+                    modeloTabela.addRow(new Object[] {
+                        dados[0], dados[1], dados[2]
+                    });
+                }
+            }
+        } catch (IOException e) {
+            
+        }
+    }
 }

@@ -4,14 +4,14 @@ import java.time.LocalDateTime;
 
 public class Tarefa {
 
-	private int codigo;
+	private String codigo;
 	private String titulo;
 	private String descricao;
 	private LocalDateTime dataInicial;
-	private LocalDateTime prazo;
+	private Integer prazo;
 	private LocalDateTime dataConclusao;
 	private Status status;
-	private Funcionario responsavel;
+	private String responsavel;
 	
 	public Tarefa (String titulo) {
 		
@@ -49,11 +49,11 @@ public class Tarefa {
 		this.dataInicial = dataInicial;
 	}
 
-	public LocalDateTime getPrazo() {
+	public Integer getPrazo() {
 		return prazo;
 	}
 
-	public void setPrazo(LocalDateTime prazo) {
+	public void setPrazo(Integer prazo) {
 		this.prazo = prazo;
 	}
 
@@ -65,20 +65,33 @@ public class Tarefa {
 		this.status = status;
 	}
 
-	public Funcionario getResponsavel() {
+	public String getResponsavel() {
 		return responsavel;
 	}
 
-	public void setResponsavel(Funcionario responsavel) {
+	public void setResponsavel(String responsavel) {
 		this.responsavel = responsavel;
 	}
 
-	public int getCodigo() {
+	public String getCodigo() {
 		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public void setDataConclusao(LocalDateTime dataConclusao) {
+		this.dataConclusao = dataConclusao;
 	}
 
 	public LocalDateTime getDataConclusao() {
 		return dataConclusao;
+	}
+	
+	@Override
+	public String toString() {
+		return this.codigo + "," + this.titulo + "," + this.descricao + "," + this.dataInicial +  "," + this.prazo + "," + this.dataConclusao + "," + this.status + "," + this.responsavel + "\n";
 	}
 
 }

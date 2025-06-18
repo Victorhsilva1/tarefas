@@ -1,5 +1,6 @@
 package br.dev.victor.tarefas.ui;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,6 +23,7 @@ public void criarHome() {
 		tela.setLayout(null);
 		tela.setSize(400, 300);
 		tela.setResizable(false);
+		tela.setFont(new Font("Arial", Font.BOLD, 16));
 		tela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		tela.setLocationRelativeTo(tela);
 		
@@ -62,7 +64,7 @@ public void criarHome() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new FrameListaFuncionario();
-				
+			
 			}
 		});
 		

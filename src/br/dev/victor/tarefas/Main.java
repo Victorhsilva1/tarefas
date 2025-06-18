@@ -16,7 +16,7 @@ import br.dev.victor.tarefas.ui.FrameFuncionario;
 import br.dev.victor.tarefas.ui.FrameListaFuncionario;
 import br.dev.victor.tarefas.ui.*;
 import br.dev.victor.tarefas.utils.Utils;
-import br.senai.dev.detalhes_ip.gui.telaIp;
+
 
 public class Main {
 	

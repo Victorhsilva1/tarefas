@@ -2,84 +2,58 @@ package br.dev.victor.tarefas.dao;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.dev.victor.tarefas.factory.FileFactory;
 import br.dev.victor.tarefas.model.Funcionario;
 
 public class FuncionarioDAO {
-	
-	private Funcionario funcionario;
-	private FileFactory ff = new FileFactory();
 
-	//Método construtor
-	public FuncionarioDAO(Funcionario funcionario) {
-		this.funcionario = funcionario;
-	}
-	
-	public void gravar() {
-		
-		FileFactory ff = new FileFactory();
-		
-		
-		try {
-			//retorna o bufferedWrited com o caminho
-			BufferedWriter bw = ff.getBufferedWriter();
-			
-			
-			//Escrever o funcionario e criando um objeto e serializando como string para escrever no arquivo
-			bw.write(funcionario.toString());
-			//Descarga para o arquivo
-			bw.flush();
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		
-	}
-	
-	//mostrar a lista de funcionarios
-	public List<Funcionario> showEmployees() {
-		
-		//declarei a lista que se chama funcionarios
-		List<Funcionario> funcionarios = new ArrayList<>();
-		
-		try {
-			// está com nosso arquivo em memoria, colocando o ponteiro na primeira
-			BufferedReader br = ff.getBufferedReader();
-			//vai ler a linha e posicionar a proxima
-			String linha = br.readLine();
-			
-			do {
-				linha = br.readLine();
-				Funcionario f = new Funcionario();
-				//split para cortar, vetor abrindo com []
-				String[] funcionario = linha != null ? linha.split(","): null;
-				// criando o objeto funcionario, sabendo que a , é o separador, e colocando cada informação
-				// em seu campo certo, 0,1,2,3
-				f.setCodigo(funcionario[0]);
-				f.setNome(funcionario[1]);
-				f.setTelefone(funcionario[2]);
-				f.setEmail(funcionario[3]);
-				
-				//criando funcionario, na lista funcionarios
-				funcionarios.add(f);
-				
-				
-			} while (linha != null );
-			
-			
-			System.out.println(funcionario);
-		} catch (Exception e) {
+    private Funcionario funcionario;
+    private final String caminhoArquivo = "C:\\Users\\Garibas\\Documents\\SENAI\\Celso\\Funcionarios.txt";
 
-			System.out.println(e.getMessage());
-		}
-		
-		return funcionarios;
-	}
-	
-	
-	
+    public FuncionarioDAO(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }
+
+    public FuncionarioDAO() {
+        // Construtor vazio para leitura
+    }
+
+    public void gravar() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(caminhoArquivo, true))) {
+            bw.write(funcionario.toString());
+            bw.newLine(); // Adiciona quebra de linha entre os registros
+        } catch (IOException e) {
+            System.out.println("Erro ao gravar funcionário: " + e.getMessage());
+        }
+    }
+
+    public List<Funcionario> showEmployees() {
+        List<Funcionario> funcionarios = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
+            String linha;
+
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(",");
+                if (dados.length >= 4) {
+                    Funcionario f = new Funcionario();
+                    f.setCodigo(dados[0]);
+                    f.setNome(dados[1]);
+                    f.setTelefone(dados[2]);
+                    f.setEmail(dados[3]);
+                    funcionarios.add(f);
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao ler funcionários: " + e.getMessage());
+        }
+
+        return funcionarios;
+    }
 }

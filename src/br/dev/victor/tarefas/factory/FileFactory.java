@@ -9,28 +9,17 @@ import java.io.IOException;
 
 public class FileFactory {
 
-	private FileWriter fw;
-	private BufferedWriter bw;
-	
-	private FileReader fr;
-	private BufferedReader br;
-	
-	private String pathFuncionarios = "C:\\Users\\25132598\\tarefa\\funcionarios.csv";
-	
-	public BufferedReader getBufferedReader() throws FileNotFoundException, IOException {
-		
-		//aqui nao se adiciona true por que é somente para leitura nao para gravação
-		fr = new FileReader(pathFuncionarios);
-		br = new BufferedReader(fr);
-		return br;
-		
-	}
-	
-	public BufferedWriter getBufferedWriter()  throws FileNotFoundException, IOException {
-		//true para adicionar coisas novas ao arquivo
-			fw = new FileWriter(pathFuncionarios, true);
-			bw = new BufferedWriter(fw);
-			
-			return bw;
-	}
+    // Retorna um BufferedReader para leitura
+    public BufferedReader getBufferedReader(String path) throws FileNotFoundException, IOException {
+        FileReader fr = new FileReader(path);
+        BufferedReader br = new BufferedReader(fr);
+        return br;
+    }
+
+    // Retorna um BufferedWriter para gravação
+    public BufferedWriter getBufferedWriter(String path, boolean append) throws FileNotFoundException, IOException {
+        FileWriter fw = new FileWriter(path, append); // true = adiciona ao fim
+        BufferedWriter bw = new BufferedWriter(fw);
+        return bw;
+    }
 }

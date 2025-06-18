@@ -79,10 +79,14 @@ public class FrameListaFuncionario {
 		scrollFuncionarios.setBounds(10, 70, 500, 300);
 		
 		btnNovo.setBounds(10, 380, 150, 40);
+		
+		 btnSair = new JButton("Sair");
+	     btnSair.setBounds(390, 380, 120, 40);
 
 		painel.add(labelTitulo);
 		painel.add(scrollFuncionarios);
 		painel.add(btnNovo);
+		painel.add(btnSair);
 		
 		btnNovo.addActionListener(new ActionListener() {
 			
@@ -92,6 +96,14 @@ public class FrameListaFuncionario {
 				
 			}
 		});
+		
+		 btnSair.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                tela.dispose(); 
+	                new FrameHome(); 
+	            }
+	        });
 		
 		tela.setVisible(true);
 
